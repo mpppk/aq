@@ -1,0 +1,22 @@
+use serde_json::Value;
+use processor;
+
+grammar;
+
+Word: String = {
+    <s:r"[a-zA-Z][a-zA-Z]*"> => s.to_string(),
+};
+
+pub Selector: processor::Processor = {
+    "." <s:Word> r"\[\]" => processor::select(&s),
+    "." <s:Word> => processor::select(&s),
+};
+
+pub SelectorList: Vec<processor::Processor> = {
+    <s:Selector> => vec![s],
+    <sl:SelectorList> <s2:Selector> => {
+        let mut sl = sl;
+        sl.push(s2);
+        sl
+    },
+};
