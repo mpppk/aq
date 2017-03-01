@@ -26,5 +26,6 @@ fn main() {
     let adapter = match &parser[0] {
         &processor::Processor::Adapter(ref a) => a,
     };
-    println!("{}", adapter(&data).unwrap().to_string());
+
+    println!("{}", serde_json::to_string_pretty(&adapter(&data).unwrap()).unwrap());
 }
